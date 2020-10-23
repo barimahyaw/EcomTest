@@ -1,0 +1,55 @@
+﻿@model EcomTest_Business.DTO.Request.DisbursementRequest
+
+@{
+    ViewData["Title"] = "EquatedMonthlyInstallment";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EquatedMonthlyInstallment">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cust_Name" class="control-label"></label>
+                <input asp-for="Cust_Name" class="form-control" />
+                <span asp-validation-for="Cust_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disb_Date" class="control-label"></label>
+                <input asp-for="Disb_Date" class="form-control" />
+                <span asp-validation-for="Disb_Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disb_Amount" class="control-label"></label>
+                <input asp-for="Disb_Amount" class="form-control" />
+                <span asp-validation-for="Disb_Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Int_Rate" class="control-label"></label>
+                <input asp-for="Int_Rate" class="form-control" />
+                <span asp-validation-for="Int_Rate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Months" class="control-label"></label>
+                <input asp-for="Months" class="form-control" />
+                <span asp-validation-for="Months" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EMS_St_Date" class="control-label"></label>
+                <input asp-for="EMS_St_Date" class="form-control" />
+                <span asp-validation-for="EMS_St_Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            @await Component.InvokeAsync("Schedule", Model)
+        </form>
+    </div>
+</div>
+
+@*<div>
+        <a asp-action="Index">Back to List</a>
+    </div>*@
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
