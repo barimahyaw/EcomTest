@@ -26,6 +26,7 @@ namespace EcomTest_Business
             var code = await _disbursementRepository.GetCustomerCodeAsync();
             // compute/generate Customer Code
             var cus_Code = code >= 1 ? code + 1 : 1;
+
             var entity = new Disbursement_Dtl
             {
                 Cust_Code = cus_Code,

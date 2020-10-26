@@ -37,7 +37,7 @@ namespace EcomTest_Business.BusinessLogics
         /// <param name="disbursement"></param>
         /// <returns>interest amount</returns>
         private double InsterestCalculator(DisbursementRequest disbursement)
-        => disbursement.Disb_Amount * disbursement.Int_Rate * NumberOfDaysBetweentwoDates(disbursement.Disb_Date, disbursement.EMS_St_Date);
+        => disbursement.Disb_Amount * disbursement.Int_Rate * (NumberOfDaysBetweentwoDates(disbursement.Disb_Date, disbursement.EMS_St_Date) / 365);
 
         /// <summary>
         /// Compute the second month interest
@@ -55,9 +55,9 @@ namespace EcomTest_Business.BusinessLogics
         private Tuple<float, float> PrincipalAmount(List<ScheduleResponse> schedules, int sNo)
         {
             // gets previous balance
-            var previousBalance = schedules.FirstOrDefault(x => x.SL_NO == sNo-1).Balance;
+            var previousBalance = schedules.FirstOrDefault(x => x.SL_NO == sNo - 1).Balance;
             // gets current schedule
-            var schedule = schedules.FirstOrDefault(x => x.SL_NO == sNo-1);
+            var schedule = schedules.FirstOrDefault(x => x.SL_NO == sNo - 1);
             // compute current principal amount
             var principalAmount = schedule.Total_Amount - schedule.Int_Amount;
 
@@ -77,17 +77,17 @@ namespace EcomTest_Business.BusinessLogics
 
             var Cust_Code = await _disbursementRepository.GetCustomerCodeAsync();
 
-            var schedule = new ScheduleResponse();
-
             for (var i = 1; i <= disbursement.Months; i++)
             {
+                var schedule = new ScheduleResponse();
                 //compute SL_NO
                 var sNo = Cust_Code + i;
                 var currentBalance = 0F;
 
                 schedule.Cust_Code = Cust_Code;
                 schedule.EMI_Date = disbursement.EMS_St_Date;
-                schedule.Total_Amount = schedule.Total_Amount == 0 ? disbursement.Disb_Amount : schedules.Sum(x => x.Total_Amount);
+
+                schedule.Total_Amount = schedules.Count == 0 ? disbursement.Disb_Amount : schedules.Sum(x => x.Total_Amount);
 
                 if (schedules.Count > 0)
                     currentBalance = (float)PrincipalAmount(schedules, sNo).Item2;
